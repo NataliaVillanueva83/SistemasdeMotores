@@ -45,7 +45,7 @@ class Menu {
         return $menu;
     }
 
-    static function getMenuCiudades() {
+    static function getMenuClientes() {
         $menu2 = new Menu('Menu Clientes');
         $menu2->addOpcion( new Opcion('Salir', 'salir'));
         $menu2->addOpcion( new Opcion('Listar', 'listarClientes'));
@@ -53,6 +53,16 @@ class Menu {
         $menu2->addOpcion( new Opcion('Modificar', 'modificarCliente'));
         $menu2->addOpcion( new Opcion('Eliminar', 'eliminarCliente'));
         $menu2->addOpcion( new Opcion('Buscar', 'buscarCliente'));
+        return $menu2;
+    }
+    static function getMenuTrabajos() {
+        $menu2 = new Menu('Menu Trabajos');
+        $menu2->addOpcion( new Opcion('Salir', 'salir'));
+        $menu2->addOpcion( new Opcion('Listar', 'listarTrabajos'));
+        $menu2->addOpcion( new Opcion('Agregar', 'agregarTrabajo'));
+        $menu2->addOpcion( new Opcion('Modificar', 'modificarTrabajo'));
+        $menu2->addOpcion( new Opcion('Eliminar', 'eliminarTrabajo'));
+        $menu2->addOpcion( new Opcion('Buscar', 'buscarTrabajo'));
         return $menu2;
     }
 }

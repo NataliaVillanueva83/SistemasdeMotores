@@ -1,25 +1,23 @@
 <?php
-require_once 'cliente/Cliente.php';
-require_once 'maquina/maquina.php';
-require_once 'trabajo/Trabajo.php';
-class db{
-    private $clientes = [Cliente::class];
-    private $trabajos = [Trabajo::class];
 
-    function  agregarCliente(Cliente $cliente) {
+class Db{
+    private $clientes = [];
+    private $trabajos = [];
+
+
+    public function  agregarCliente(Cliente $cliente) {
         $this->clientes[] = $cliente;
 
     }
-    function getClientes () {
+    public function getClientes(): array {
         return $this->clientes;
-    
     }
-    function getTrabajos (){
-        return $this-> trabajos;
 
+    public function getTrabajos(): array {
+        return $this->trabajos;
     }
-    function agregarTrabajo(Trabajo $trabajo){
 
+    public function agregarTrabajo(Trabajo $trabajo): void {
         $this->trabajos[] = $trabajo;
     }
     function buscarClientePorNombre($nombre){
@@ -33,15 +31,30 @@ class db{
         
 
     }
-    function buscarIndiceClientePorNombre($nombre){
-            $indice = 0;
-            foreach ($this->clientes as $cliente) {
-                if ($ciudad->getNombre() == $nombre) {
-                    return $indice;
-                }
-                $indice++;
+    public function buscarIndiceClientePorNombre(string $nombre){
+        $i = 0;
+        foreach ($this->clientes as  $cliente) {
+            if ($cliente->getNombre() === $nombre) {
+                return $i;
             }
-            return null;
-
+        }
+        return null;
+    }
+    function buscarTrabajoPorCliente(Cliente $cliente) {
+        $trabajosCliente = [];
+        foreach ($this->trabajos as $trabajo) {
+            if ($trabajo->getCliente()->getId() == $cliente->getId()) {
+                $trabajosCliente[] = $trabajo;
+            }
+        }
+        return $trabajosCliente;
+    }
+    function buscarTrabajoPorId($idTrabajo) {
+        foreach ($this->trabajos as $trabajo) {
+            if ($trabajo->getIdTrabajo() == $idTrabajo) {
+                return $trabajo;
+            }
+        }
+        return null;
     }
 }
