@@ -57,4 +57,14 @@ class Db{
         }
         return null;
     }
+    function buscarTrabajoPorIdPorIndice($idTrabajo) {
+        $i = 0;
+        foreach ($this->trabajos as $trabajo) {
+            if ($trabajo->getIdTrabajo() == $idTrabajo) {
+                return $i;
+            }
+            $i++;
+        }
+        return null;
+    }
 }

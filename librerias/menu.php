@@ -1,5 +1,5 @@
 <?php
-require_once ('Opcion.php');
+require_once(__DIR__ . '/opcion.php');
 
 class Menu {
     private $titulo;

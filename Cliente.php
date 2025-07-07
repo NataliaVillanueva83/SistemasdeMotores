@@ -49,6 +49,9 @@ class Cliente {
     public function agregarMaquina(Maquina $maquina) {
         $this->maquinas[] = $maquina;
     }
+    public function getMaquinas(): array {
+        return $this->maquinas;
+    }
 
 
     public function agregarTrabajo(Trabajo $trabajo): void {

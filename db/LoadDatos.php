@@ -13,17 +13,17 @@
       $maquina1 = (new Maquina("Excavadora", "CAT 320"));
       $maquina2 = (new Maquina("Buldoser", "CAT D6"));
       $maquina3 = (new Maquina("Retroexcavadora", "CAT 420"));
-      $maquina1->agregarMotor("123456");
+     /* $maquina1->agregarMotor("123456");
       $maquina1->agregarMotor("654321");
       $maquina2->agregarMotor("789012");
-      $maquina3->agregarMotor("345678");
+      $maquina3->agregarMotor("345678");*/
       $cliente1->agregarMaquina($maquina1);
       $cliente2->agregarMaquina($maquina2);
       $cliente3->agregarMaquina($maquina3);
-      $trabajo1 = (new Trabajo("Cambio de aceite", new DateTime(), $maquina1));
-      $trabajo2 = (new Trabajo("Reparacion de motor", new DateTime(), $maquina2));
-      $trabajo3 = (new Trabajo("Mantenimiento general", new DateTime(), $maquina3));
-      $trabajo4 = (new Trabajo("Cambio de filtros", new DateTime(), $maquina1));
+      $trabajo1 = (new Trabajo("Cambio de aceite", "21-03-2025", $maquina1, $cliente1));
+      $trabajo2 = (new Trabajo("Reparacion de motor", "14-05-2025", $maquina2, $cliente2));
+      $trabajo3 = (new Trabajo("Mantenimiento general", "16-06-2024", $maquina3, $cliente3));
+      $trabajo4 = (new Trabajo("Cambio de filtros", "25-01-2025", $maquina1, $cliente1));
 $db->agregarTrabajo($trabajo1);
 $db->agregarTrabajo($trabajo2);
 $db->agregarTrabajo($trabajo3);     

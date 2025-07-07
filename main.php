@@ -50,31 +50,81 @@ function agregarCliente() {
 function agregarTrabajo() {
     global $db;
 
-    mostrar("Agregar nuevo trabajo");
+    mostrar("=== Agregar nuevo trabajo ===");
 
     $clienteNombre = leer("Nombre del cliente:");
     $cliente = $db->buscarClientePorNombre($clienteNombre);
-    
+
     if ($cliente === null) {
         mostrar("Cliente no encontrado.");
+        leer("Presione ENTER para continuar...");
         return;
     }
 
-    $descripcion = leer("Descripcion del trabajo:");
-    $fecha = leer("Fecha del trabajo (YYYY-MM-DD):");
     
-    $trabajo = new Trabajo($cliente, $descripcion, $fecha);
+ $maquinas = $cliente->getMaquinas();
+    if (empty($maquinas)) {
+        mostrar("El cliente no tiene máquinas registradas.");
+        leer("Presione ENTER para continuar...");
+        return;
+    }
+
+  mostrar("Máquinas del cliente:");
+    foreach ($maquinas as $i => $maq) {
+        mostrar("[$i] " . $maq->getNombre() . " (" . $maq->getModelo() . ")");
+    }
+
+    $indiceMaq = leer("Ingrese el número de la máquina:");
+    if (!isset($maquinas[$indiceMaq])) {
+        mostrar("Maquina no encontrada.");
+        leer("Presione ENTER para continuar...");
+        return;
+    }
+
+    $maquinaSeleccionada = $maquinas[$indiceMaq];
+
+   /*// Paso 4: Verificar que tenga motores
+    $motores = $maquinaSeleccionada->getMotores();
+    if (empty($motores)) {
+        mostrar("La máquina no tiene motores registrados.");
+        leer("Presione ENTER para continuar...");
+        return;
+    }
+
+
+    mostrar("Motores disponibles (N° de serie):");
+    foreach ($motores as $motorSerie) {
+        mostrar("- $motorSerie");
+    }
+
+    $motorSeleccionado = leer("Ingrese el N° de serie del motor:");
+    if (!in_array($motorSeleccionado, $motores)) {
+        mostrar(" N° de serie no encontrado en esta máquina.");
+        leer("Presione ENTER para continuar...");
+        return;
+    }*/
+    $descripcion = leer("Descripción del trabajo:");
+
+    $fechaInput = leer("Fecha del trabajo (YYYY-MM-DD):");
+    $trabajo = new Trabajo($descripcion, $fechaInput, $maquinaSeleccionada, $cliente);
+ 
+
     $db->agregarTrabajo($trabajo);
 
-    mostrar("Se agrego un nuevo trabajo: " . $trabajo);
-    leer("\nPresione ENTER para continuar ...");
+    mostrar("Trabajo agregado correctamente:");
+    mostrar($trabajo); 
+    leer("\nPresione ENTER para continuar...");
 }
+
+    
 function modificarCliente() {
     global $db;
     $nombre = leer("Ingrese el nombre del cliente a modificar:");
     $cliente = $db->buscarClientePorNombre($nombre);    
+   
     if ($cliente === null) {
-        mostrar("Cliente no encontrado.");
+        mostrar( "Cliente no encontrado en la lista.");
+        leer("\nPresione ENTER para continuar ...");
         return;
     }
     $nuevoNombre = leer("Nuevo nombre:");
@@ -91,17 +141,18 @@ function modificarCliente() {
 }   
 function modificarTrabajo() {
     global $db;
-    $descripcion = leer("Ingrese la descripcion del trabajo a modificar:");
-    $trabajo = $db->buscarTrabajoPorDescripcion($descripcion);    
+    $idTrabajo= leer("Ingrese el id del trabajo a modificar:");
+    $trabajo = $db->buscarTrabajoPorId($idTrabajo;    
     if ($trabajo === null) {
         mostrar("Trabajo no encontrado.");
+        leer("\nPresione ENTER para continuar ...");
         return;
     }
     $nuevaDescripcion = leer("Nueva descripcion:");
     $nuevaFecha = leer("Nueva fecha (YYYY-MM-DD):"); 
 
     $trabajo->setDescripcion($nuevaDescripcion);
-    $trabajo->setFecha(new DateTime($nuevaFecha));    
+    $trabajo->setFecha($nuevaFecha);    
 
     mostrar("Trabajo modificado: " . $trabajo);
     leer("\nPresione ENTER para continuar ...");
@@ -110,10 +161,11 @@ function eliminarCliente() {
     global $db;
     $nombre = leer("Ingrese el nombre del cliente a eliminar:");
     $cliente = $db->buscarClientePorNombre($nombre);    
-    if ($cliente === null) {            
-        mostrar("Cliente no encontrado.");
+    if ($cliente === null) {
+        mostrar( "Cliente no encontrado en la lista.");
+        leer("\nPresione ENTER para continuar ...");
         return;
-    }   
+    }
     $indice = $db->buscarIndiceClientePorNombre($nombre);
     if ($indice !== null) {
         unset($db->getClientes()[$indice]);
@@ -125,13 +177,14 @@ function eliminarCliente() {
 }
 function eliminarTrabajo() {
     global $db;
-    $descripcion = leer("Ingrese la descripcion del trabajo a eliminar:");
-    $trabajo = $db->buscarTrabajoPorDescripcion($descripcion);    
+    $idTrabajo = leer("Ingrese el id del trabajo a eliminar:");
+    $trabajo = $db->buscarTrabajoPorId($descripcion);    
     if ($trabajo === null) {
         mostrar("Trabajo no encontrado.");
+        leer("\nPresione ENTER para continuar ...");
         return;
     }
-    $indice = $db->buscarIndiceTrabajoPorDescripcion($descripcion);
+    $indice = $db->buscarTrabajoPorIdPorIndice($idTrabajo);
     if ($indice !== null) {
         unset($db->getTrabajos()[$indice]);
         mostrar("Trabajo eliminado: " . $trabajo);
@@ -180,15 +233,19 @@ function clientes() {
 
     }
 }
+function trabajos() {
+    $menu = Menu::getMenuTrabajos();
+    $opcion = $menu->elegir();
+    while ($opcion->getNombre() != 'Salir') {
 
-function trabajo() {
-    mostrar('Gestionar personas');
-    die;
+        $funcion = $opcion->getFuncion();
+        call_user_func($funcion);
+
+        $opcion = $menu->elegir();    
+
+    }
 }
 
-// Personas
-// Ciudades
-// Personas tienen una ciudad de nacimiento
 
 mostrar("Sistema de Gestión de Mantenimiento de Motores");
 mostrar("==============================");

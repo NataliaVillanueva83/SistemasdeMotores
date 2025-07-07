@@ -4,7 +4,7 @@ class Maquina {
     private $idMaquina; 
     private $nombre;
     private $modelo;
-    private array $motores = []; //solo agrego el numero de serie del motor
+    //private array $motores = []; //solo agrego el numero de serie del motor
 
 
     // Constructor
@@ -39,7 +39,7 @@ class Maquina {
     }
 
 
-    public function agregarMotor($numeroSerie) {
+   /* public function agregarMotor($numeroSerie) {
         $this->motores[] = $numeroSerie;
     }
 
@@ -51,12 +51,12 @@ class Maquina {
     
     public function getMotores(): array {
         return $this->motores;
-    }
-    
+    } **/
+
     public function __toString(): string {
         return "Maquina ID: " . $this->idMaquina . 
                ", Nombre: " . $this->nombre . 
-               ", Modelo: " . $this->modelo . 
-               ", Motores: " . implode(", ", $this->motores);
+               ", Modelo: " . $this->modelo . ;
+    
     }
 }
